@@ -6,15 +6,18 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdateCompany;
 use App\Http\Resources\CompanyResource;
 use App\Models\Company;
+use App\Services\EvaluationService;
 use Illuminate\Http\Request;
 
 class CompanyController extends Controller
 {
     private $repository;
+    private $evaluationService;
 
-    public function __construct(Company $model)
+    public function __construct(Company $model, EvaluationService $evaluationService)
     {
         $this->repository = $model;
+        $this->evaluationService = $evaluationService;
     }
 
     /**
@@ -45,12 +48,14 @@ class CompanyController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $uuid
+     * @param  string  $uuid
      * @return \Illuminate\Http\Response
      */
     public function show($uuid)
     {
         $company = $this->repository->where('uuid', $uuid)->firstOrFail();
+
+        dd($this->evaluationService->getEvaluationsCompany($uuid));
 
         return new CompanyResource($company);
     }
