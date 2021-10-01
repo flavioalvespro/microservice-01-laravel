@@ -20,7 +20,7 @@ class EvaluationService
     public function getEvaluationsCompany(string $company)
     {
         $response = $this->request('get', "/evaluations/{$company}");
-
+        
         return $response->body();
     }
 }

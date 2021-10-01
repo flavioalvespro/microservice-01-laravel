@@ -52,12 +52,12 @@ class CompanyController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($uuid)
-    {
+    {        
         $company = $this->repository->where('uuid', $uuid)->firstOrFail();
+        
+        $evaluations = $this->evaluationService->getEvaluationsCompany($uuid);
 
-        dd($this->evaluationService->getEvaluationsCompany($uuid));
-
-        return new CompanyResource($company);
+        return (new CompanyResource($company))->additional(['evaluations' => json_decode($evaluations)]);
     }
 
     /**

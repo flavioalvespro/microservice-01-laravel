@@ -11,10 +11,11 @@ trait ConsumeExternalService
     {
         array_push($headers, [
             'Accept' => 'application/json',
+            'Content-Type' => 'application/json',
             'Authorization' => $this->token
         ]);
-
-        return Http::withHeaders($headers);
+        
+        return Http::withHeaders($headers[0]);
     }
 
     public function request(
@@ -24,8 +25,8 @@ trait ConsumeExternalService
         array $headers = []
     )
     {
-
+        
         return $this->headers($headers)
-        ->$method($this->url . $endPoint);
+        ->$method($this->url . $endPoint, $formParams);
     }
 }
