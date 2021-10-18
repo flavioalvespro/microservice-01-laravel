@@ -13,6 +13,9 @@ services:
         working_dir: /var/www/
         volumes:
             - ./:/var/www
+        depends_on:
+            - redis_micro_01
+            - queue_micro_01
         networks:
             - microservices
 
@@ -42,7 +45,28 @@ services:
             - 3308:3306
         networks:
             - microservices
+    #queues micro_01
+    queue_micro_01:
+        build:
+            args:
+                user: flavio
+                uid: 1000
+            context: ./
+            dockerfile: Dockerfile
+        restart: unless-stopped
+        command: "php artisan queue:work"
+        volumes:
+            - ./:/var/www
+        depends_on:
+            - redis_micro_01
+        networks:
+            - microservices
 
+    #redis
+    redis_micro_01:
+        image: redis:latest
+        networks:
+            - microservices
 networks:
     microservices:
         driver: bridge
