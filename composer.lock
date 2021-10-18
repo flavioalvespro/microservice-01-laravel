@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7759431e303e2d722a264a8a991a9e84",
+    "content-hash": "298c4bcfbe597966d11f3e0945c9b6ce",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -558,6 +558,43 @@
                 "source": "https://github.com/fideloper/TrustedProxy/tree/4.4.1"
             },
             "time": "2020-10-22T13:48:01+00:00"
+        },
+        {
+            "name": "flavioalvespro/microservices-common",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/flavioalvespro/microservices-common.git",
+                "reference": "bf2ea191af9d80e13ad56a88564fb2f99ad955c6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/flavioalvespro/microservices-common/zipball/bf2ea191af9d80e13ad56a88564fb2f99ad955c6",
+                "reference": "bf2ea191af9d80e13ad56a88564fb2f99ad955c6",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Flavioalvespro\\MicroservicesCommon\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Flavio Alves",
+                    "email": "flavioalvespro@gmail.com"
+                }
+            ],
+            "description": "Package files utils microservices",
+            "support": {
+                "issues": "https://github.com/flavioalvespro/microservices-common/issues",
+                "source": "https://github.com/flavioalvespro/microservices-common/tree/1.0.0"
+            },
+            "time": "2021-10-01T19:41:22+00:00"
         },
         {
             "name": "fruitcake/laravel-cors",
