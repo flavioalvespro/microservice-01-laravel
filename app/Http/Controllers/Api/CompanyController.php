@@ -7,6 +7,7 @@ use App\Http\Requests\StoreUpdateCompany;
 use App\Http\Resources\CompanyResource;
 use App\Jobs\CompanyCreated;
 use App\Models\Company;
+use App\Services\CompanyService;
 use App\Services\EvaluationService;
 use Illuminate\Http\Request;
 
@@ -14,11 +15,12 @@ class CompanyController extends Controller
 {
     private $repository;
     private $evaluationService;
+    private $companyService;
 
-    public function __construct(Company $model, EvaluationService $evaluationService)
+    public function __construct(EvaluationService $evaluationService, CompanyService $companyService)
     {
-        $this->repository = $model;
         $this->evaluationService = $evaluationService;
+        $this->companyService = $companyService;
     }
 
     /**
@@ -28,7 +30,7 @@ class CompanyController extends Controller
      */
     public function index(Request $request)
     {
-        $companies = $this->repository->getCompanies($request->get('filter', ''));
+        $companies = $this->companyService->getCompanies($request->get('filter', ''));
 
         return CompanyResource::collection($companies);
     }
@@ -41,9 +43,9 @@ class CompanyController extends Controller
      */
     public function store(StoreUpdateCompany $request)
     {
-        $company = $this->repository->create($request->validated());
+        $company = $this->companyService->createNewCompany($request->validated());
 
-        CompanyCreated::dispatch($company->email);
+        CompanyCreated::dispatch($company->email)->onQueue('queue_mail');
         
         return new CompanyResource($company);
     }
@@ -56,7 +58,7 @@ class CompanyController extends Controller
      */
     public function show($uuid)
     {        
-        $company = $this->repository->where('uuid', $uuid)->firstOrFail();
+        $company = $this->companyService->getCompanyByUuid($uuid);
         
         $evaluations = $this->evaluationService->getEvaluationsCompany($uuid);
 
@@ -72,9 +74,7 @@ class CompanyController extends Controller
      */
     public function update(StoreUpdateCompany $request, $uuid)
     {
-        $company = $this->repository->where('uuid', $uuid)->firstOrFail();
-
-        $company->update($request->validated());
+        $this->companyService->updateCompany($uuid, $request->validated());
 
         return response()->json([
             'message' => 'Updated'
@@ -89,9 +89,7 @@ class CompanyController extends Controller
      */
     public function destroy($uuid)
     {
-        $company = $this->repository->where('uuid', $uuid)->firstOrFail();
-
-        $company->delete();
+        $this->companyService->deleteCompany($uuid);
 
         return response()->json([], 204);
     }
