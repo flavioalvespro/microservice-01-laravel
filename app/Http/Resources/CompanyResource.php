@@ -20,7 +20,8 @@ class CompanyResource extends JsonResource
             'url' => $this->url,
             'email' => $this->email,
             'phone' => $this->phone,
-            'category' => new CategoryResource($this->category)
+            'category' => new CategoryResource($this->category),
+            'image' => url("storage/{$this->image}")
         ];
     }
 }
